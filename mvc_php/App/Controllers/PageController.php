@@ -1,6 +1,11 @@
 <?php
 class PageController extends Controller
 {
+    public function __construct(PDO $coneccion)
+    {
+        
+    }
+    
     public function home()
     {
         // echo 'estoy en home';
