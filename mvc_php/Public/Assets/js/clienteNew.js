@@ -13,7 +13,7 @@ async function clienteFormularioSubmit(){
 
     let ruta = cliente.id > 0 ? 'update' : 'create';
 
-    let reposense = await  fetch('http://localhost:82/mvc_php/public/cliente/' + ruta,{
+    let reposense = await  fetch(URL_PATH + '/cliente/' + ruta,{
         method: 'POST',
         body: JSON.stringify(cliente),
     });

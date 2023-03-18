@@ -1,5 +1,5 @@
 async function clienteList() {
-    let reposense = await  fetch('http://localhost:82/mvc_php/public/cliente/table');
+    let reposense = await  fetch(URL_PATH + '/cliente/table');
     let reposenseData = await reposense.json();
     
     if(reposenseData.success){
@@ -12,7 +12,7 @@ async function clienteList() {
             <td>${item.apellidos}</td>
             <td>${item.direccion}</td>
             <td>
-                <a href="http://localhost:82/mvc_php/public/cliente/edit/?id=${item.id}">
+                <a href="${URL_PATH}/cliente/edit/?id=${item.id}">
                 <button>Editar</button>
                 </a>
                 <button onclick="eliminarCliente(${item.id})">Eliminar</button>
@@ -24,12 +24,21 @@ async function clienteList() {
 
 clienteList();
 
-async function eliminarCliente(id){
-    let reposense = await  fetch('http://localhost:82/mvc_php/public/cliente/delete',{
-        method: 'DELETE',
-        body: JSON.stringify({ id }),
-    });
-    let reposenseData = await reposense.json();
-    console.log(reposenseData);
-    clienteList();
+function eliminarCliente(id){
+    BsModal.confirm({
+        title: '¿Esta seguro de eliminar este registro?',
+        onOk: async () => {
+            let reposense = await  fetch(URL_PATH + '/cliente/delete',{
+                method: 'DELETE',
+                body: JSON.stringify({ id }),
+            });
+            let reposenseData = await reposense.json();
+            if(reposenseData.success){
+                BsModal.confirm({ title: reposenseData.message });
+                clienteList();
+            } else {
+                BsModal.confirm({ title: reposenseData.message });
+            }
+        }
+    })
 }
